@@ -6,16 +6,36 @@ Quickly stand up an HA-style installation of Ubuntu Rancher products on your inf
 As a result, this repository minimizes costs by standing up the minimum required resources for a given provider.
 
 ## Rancher Management Server Vshpere
-### Rancher Server
+### Clone Repository for guidlines
+```
+git clone https://github.com/viyancs/kubernetes-rancher-scratch.git
+cd kubernetes-rancher-scratch/ha
+```
+### Run this configuration Cluster on 3 node (vm)
 - Create  one Ubuntu 22.04.2 VM with sha key access
 - Update the system
     ```
-    sudo apt update && sudo apt upgrade -y
+    sudo apt update && sudo apt install curl -y
     ```
-- Install Docker if not installed
-- Install Rancher using Docker
+- Install kubectl
     ```
-    sudo docker run -d --restart=unless-stopped --privileged -p 80:80 -p 443:443 rancher/rancher
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+    # validate binary
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+    echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    kubectl version --client
+
+    ```
+
+- Install RKE 
+    ```
+    curl -O https://github.com/rancher/rke/releases/download/v1.5.0/rke_linux-amd64
+    mv rke_linux-amd64 rke
+    chmod +x rke
+    rke --version
     ```
 
 
