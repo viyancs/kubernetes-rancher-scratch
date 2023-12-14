@@ -14,7 +14,7 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 kubectl version --client
 
 # Install RKE
-curl -O https://github.com/rancher/rke/releases/download/v1.5.0/rke_linux-amd64
+curl -LO https://github.com/rancher/rke/releases/download/v1.5.0/rke_linux-amd64
 mv rke_linux-amd64 rke
 mv rke /usr/bin/
 chmod +x /usr/bin/rke
