@@ -15,7 +15,7 @@ As a result, this repository minimizes costs by standing up the minimum required
 - Install Docker if not installed
 - Install Rancher using Docker
     ```
-    sudo docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
+    sudo docker run -d --restart=unless-stopped --privileged -p 80:80 -p 443:443 rancher/rancher
     ```
 
 

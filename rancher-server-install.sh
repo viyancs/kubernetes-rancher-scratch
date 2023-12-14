@@ -27,4 +27,5 @@ else
 fi
 
 # install and run rancher on container
-sudo docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher
+sudo docker run -d --restart=unless-stopped --privileged -p 80:80 -p 443:443 rancher/rancher
+
