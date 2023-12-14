@@ -17,5 +17,5 @@ kubectl version --client
 curl -O https://github.com/rancher/rke/releases/download/v1.5.0/rke_linux-amd64
 mv rke_linux-amd64 rke
 mv rke /usr/bin/
-chmod +x rke
+chmod +x /usr/bin/rke
 rke --version
