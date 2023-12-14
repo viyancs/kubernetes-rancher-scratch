@@ -11,7 +11,6 @@ As a result, this repository minimizes costs by standing up the minimum required
 - Update the system
     ```
     sudo apt update && sudo apt upgrade -y
-
     ```
 - Install Docker if not installed
 - Install Rancher using Docker
