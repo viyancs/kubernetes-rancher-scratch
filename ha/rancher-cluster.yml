@@ -1,14 +1,14 @@
 nodes:
-  - address: 178.128.19.165
-    internal_address: 10.130.0.5
+  - address: 134.209.103.72
+    internal_address: 10.130.0.3
     user: root
     role: [controlplane, worker, etcd]
-  - address: 178.128.81.4
+  - address: 159.223.85.9
     internal_address: 10.130.0.4
     user: root
     role: [controlplane, worker, etcd]
-  - address: 139.59.236.96
-    internal_address: 10.130.0.3
+  - address: 104.248.151.156
+    internal_address: 10.130.0.5
     user: root
     role: [controlplane, worker, etcd]
 
