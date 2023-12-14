@@ -1,15 +1,15 @@
 nodes:
-  - address: 165.227.114.63
-    internal_address: 172.16.22.12
-    user: ubuntu
+  - address: 178.128.19.165
+    internal_address: 10.130.0.5
+    user: root
     role: [controlplane, worker, etcd]
-  - address: 165.227.116.167
-    internal_address: 172.16.32.37
-    user: ubuntu
+  - address: 178.128.81.4
+    internal_address: 10.130.0.4
+    user: root
     role: [controlplane, worker, etcd]
-  - address: 165.227.127.226
-    internal_address: 172.16.42.73
-    user: ubuntu
+  - address: 139.59.236.96
+    internal_address: 10.130.0.3
+    user: root
     role: [controlplane, worker, etcd]
 
 services:

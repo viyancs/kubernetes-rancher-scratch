@@ -12,7 +12,7 @@ git clone https://github.com/viyancs/kubernetes-rancher-scratch.git
 cd kubernetes-rancher-scratch/ha
 ```
 ### Run this configuration Cluster on 3 node (vm)
-- Create  one Ubuntu 22.04.2 VM with sha key access
+- Create  one Ubuntu 22.04.2 VM with rsa key access with name of vm is rancher-node
 - Update the system
     ```
     sudo apt update && sudo apt install curl -y
@@ -37,6 +37,10 @@ cd kubernetes-rancher-scratch/ha
     chmod +x rke
     rke --version
     ```
+- create 3 vm with specification ubuntu os, and ssh access that can be accessed from rancher node
+
+- create racher-cluster.yml file 
+- run cluster
 
 
 ### Local quickstart
