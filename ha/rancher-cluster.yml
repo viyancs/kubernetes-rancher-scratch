@@ -22,8 +22,6 @@ services:
     retention: 24h
   kubeproxy:
     extra_args:
-      # Set the level of log output to debug-level
-      v: 4
       proxy-mode: ipvs
     extra_binds:
       - "/lib/modules:/lib/modules:ro"
