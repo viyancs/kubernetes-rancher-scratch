@@ -39,7 +39,7 @@ sudo ufw allow 2379
 sudo ufw allow 6443
 sudo ufw allow 10248 #kubelet
 sudo ufw allow 10256 #kube-proxy
-sudo ufw allow 10249
+sudo ufw allow 10249 #kube-proxy
 sudo ufw allow 10259 #kube-schedule
 sudo ufw allow 10257
 sudo ufw allow 10250 #port-checker

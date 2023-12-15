@@ -24,6 +24,7 @@ services:
     extra_args:
       # Set the level of log output to debug-level
       v: 4
+      proxy-mode: ipvs
 
 # Required for external TLS termination with
 # ingress-nginx v0.22+
