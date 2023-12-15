@@ -28,6 +28,8 @@ fi
 
 # update package
 sudo apt update -y && sudo apt install curl -y
+# install firewall
+sudo apt install ufw -y
 
 # Install kubectl
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
