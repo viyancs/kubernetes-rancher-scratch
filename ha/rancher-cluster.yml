@@ -2,14 +2,17 @@ nodes:
   - address: 134.209.103.72
     internal_address: 10.130.0.3
     user: root
+    ssh_key_path: ~/.ssh/id_rsa
     role: [controlplane, worker, etcd]
   - address: 159.223.85.9
     internal_address: 10.130.0.4
     user: root
+    ssh_key_path: ~/.ssh/id_rsa
     role: [controlplane, worker, etcd]
   - address: 104.248.151.156
     internal_address: 10.130.0.5
     user: root
+    ssh_key_path: ~/.ssh/id_rsa
     role: [controlplane, worker, etcd]
 
 services:
@@ -25,4 +28,4 @@ ingress:
   options:
     use-forwarded-headers: "true"
 
-kubernetes_version: v1.25.6-rancher4-1
+#kubernetes_version: v1.25.6-rancher4-1
