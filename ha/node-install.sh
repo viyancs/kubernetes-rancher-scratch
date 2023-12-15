@@ -37,3 +37,5 @@ sudo ufw allow 2376
 sudo ufw allow 2380
 sudo ufw allow 2379
 sudo ufw allow 6443
+sudo ufw allow 10248
+sudo ufw allow 10256
