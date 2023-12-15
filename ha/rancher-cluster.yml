@@ -20,10 +20,6 @@ services:
     snapshot: true
     creation: 6h
     retention: 24h
-  kubeproxy:
-    extra_args:
-      # Set the level of log output to debug-level
-      v: 4
 
 # Required for external TLS termination with
 # ingress-nginx v0.22+
