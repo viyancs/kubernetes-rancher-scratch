@@ -20,5 +20,8 @@ cd kubernetes-rancher-scratch/rke2/ha
 - Create unique hostname in each server node , put 1 node for fixed-server
 - Run this script on each server ``` chmod+x server.sh && ./server.sh ``` 
 - SSH into fixed-server 
-- Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and run ``` chmod+x server.sh && ./fixed-server.sh ```
+- Config Host & Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and then run ``` chmod+x server.sh && ./fixed-server.sh ```
+- SSH into each additional server 
+- Config Host, Config server url rke2 config file, Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```add-server-node.sh``` and then run ``` chmod+x add-server-node.sh && ./add-server-node.sh ```
+
 
