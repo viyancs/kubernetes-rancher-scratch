@@ -31,8 +31,7 @@ systemctl start rke2-server
 ```
 - ensure each server kube cluster for the cluster by running this
 ```
-/var/lib/rancher/rke2/bin/kubectl get nodes \
-  --kubeconfig /etc/rancher/rke2/rke2.yaml
+kubectl get nodes 
 ```
 
 

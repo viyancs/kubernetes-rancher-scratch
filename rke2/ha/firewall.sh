@@ -9,7 +9,7 @@ ufw allow 10250
 ufw allow 2379
 ufw allow 2380
 ufw allow 2381
-ufw allow 30000:32767
+ufw allow 30000:32767/tcp
 ufw allow 8472/udp
 ufw allow 4240
 ufw allow proto icmp type 8/0
