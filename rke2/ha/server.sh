@@ -17,11 +17,14 @@ else
     echo "Failed to create the configuration file."
 fi
 
-
+apt install ufw -y
 
 # install rke2 server
 curl -sfL https://get.rke2.io | sh -
 systemctl enable rke2-server.service
 systemctl start rke2-server.service
 #journalctl -u rke2-server -f
+cp /var/lib/rancher/rke2/bin/kubectl /usr/local/bin
+export KUBECONFIG=/etc/rancher/rke2/rke2.yaml
+export PATH=$PATH:/opt/rke2/bin:/var/lib/rancher/rke2/bin
 cat /var/lib/rancher/rke2/server/node-token

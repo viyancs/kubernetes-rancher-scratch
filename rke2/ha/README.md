@@ -23,5 +23,15 @@ cd kubernetes-rancher-scratch/rke2/ha
 - Config Host & Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and then run ``` chmod+x server.sh && ./fixed-server.sh ```
 - SSH into each additional server 
 - Config Host, Config server url rke2 config file, Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```add-server-node.sh``` and then run ``` chmod+x add-server-node.sh && ./add-server-node.sh ```
+- restart rke2 service each server 
+```
+systemctl stop rke2-server
+systemctl start rke2-server
+```
+- ensure each server kube cluster for the cluster by running this
+```
+/var/lib/rancher/rke2/bin/kubectl get nodes \
+  --kubeconfig /etc/rancher/rke2/rke2.yaml
+```
 
 
