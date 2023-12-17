@@ -18,12 +18,14 @@ cd kubernetes-rancher-scratch/rke2/ha
 ### Run this configurationto install server rke2
 - Create 3 vm Ubuntu 22.04.2  with rsa key access 
 - Create unique hostname in each server node , put 1 node for fixed-server
-- Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
-- Run this script on each server ``` chmod+x server.sh && ./server.sh ``` 
 - SSH into fixed-server 
-- Config Host & Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and then run ``` chmod+x server.sh && ./fixed-server.sh ```
-- SSH into each additional server 
-- Config Host, Config server url rke2 config file, Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```add-server-node.sh``` and then run ``` chmod+x add-server-node.sh && ./add-server-node.sh ```
+- Config Host & Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and then run ``` chmod +x server.sh && ./fixed-server.sh ```
+- load balancer
+- quit from ssh fixed server
+- Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
+- Run this script on each server ``` chmod +x server.sh && ./server.sh ``` 
+- SSH into each server 
+- Config Host, Config server url rke2 config file, Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```add-server-node.sh``` and then run ``` chmod +x add-server-node.sh && ./add-server-node.sh ```
 - restart rke2 service each server 
 ```
 systemctl stop rke2-server
