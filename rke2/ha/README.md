@@ -20,7 +20,7 @@ cd kubernetes-rancher-scratch/rke2/ha
 - Create unique hostname in each server node , put 1 node for fixed-server
 - SSH into fixed-server 
 - Config Host & Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```fixed-server.sh``` and then run ``` chmod +x server.sh && ./fixed-server.sh ```
-- Run script for config load balancer ``` chmod +x load-balancer.sh && ./load-balancer.sh ```
+- Config Host, Run script for config load balancer ``` chmod +x load-balancer.sh && ./load-balancer.sh ```
 - quit from ssh fixed server
 - Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
 - Run this script on each server ``` chmod +x server.sh && ./server.sh ``` 

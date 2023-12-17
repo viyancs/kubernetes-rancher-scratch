@@ -70,6 +70,12 @@ EOF
 
 echo "Nginx configuration file created at /etc/nginx/nginx.conf"
 
-#disable se linux
-setenforce 0
+# Check SELinux status
+sestatus
+
+# Disable SELinux by modifying the config file
+sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
+echo "SELinux has been disabled in the configuration file."
+
 systemctl restart nginx

@@ -2,9 +2,11 @@
 
 # Define an array of host entries (IP address followed by hostname)
 declare -a host_entries=(
-    "10.130.0.2 dev.srv1.vyn.com"
-    "10.130.0.3 dev.srv2.vyn.com"
+    "10.130.0.3 dev.srv1.vyn.com"
+    "10.130.0.5 dev.srv2.vyn.com"
     "10.130.0.4 dev.srv3.vyn.com"
+    "10.130.0.2 fxd.vyn.com"
+    "10.130.0.6 agent1.vyn.com"
 )
 
 # Function to check and add host entries
@@ -22,29 +24,3 @@ add_hosts() {
 # Call the function to add host entries
 add_hosts
 
-## RKE2 config HA ##
-# create  rke2 folder
-mkdir -p /etc/rancher/rke2/
-
-# create rke2 config file
-file_content=$(cat <<EOF
-token: my-shared-secret
-tls-san:
-  - dev.srv1.vyn.com
-  - dev.srv2.vyn.com
-  - dev.srv3.vyn.com
-EOF
-)
-
-# Specify the file path
-file_path="/etc/rancher/rke2/config.yaml"
-
-# Use echo to write the content to the file
-echo "$file_content" > "$file_path"
-
-# Display a message indicating the file creation
-if [ -f "$file_path" ]; then
-    echo "File '$file_path' created successfully."
-else
-    echo "Failed to create the file."
-fi
