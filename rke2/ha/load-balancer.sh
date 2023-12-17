@@ -1,22 +1,111 @@
 #!/bin/bash
+apt update
+apt install ufw build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev libxml2-dev libxslt1-dev libgd-dev -y
+ufw allow 80
+
 # setup load balancer #
-apt install nginx -y
-mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+wget http://nginx.org/download/nginx-1.25.2.tar.gz
+tar -zxvf nginx-1.25.2.tar.gz
+cd nginx-1.25.2
+./configure --with-stream
+make
+make install
 
-cat << 'EOF' > /etc/nginx/nginx.conf
-user nginx;
-worker_processes 4;
-worker_rlimit_nofile 40000;
-error_log /var/log/nginx/error.log;
-pid /run/nginx.pid;
+# Create the Nginx service file
+tee /lib/systemd/system/nginx.service > /dev/null <<EOF
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=network.target
 
-# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
-include /usr/share/nginx/modules/*.conf;
+[Service]
+Type=forking
+ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+ExecReload=/usr/local/nginx/sbin/nginx -s reload
+ExecStop=/usr/local/nginx/sbin/nginx -s stop
+PrivateTmp=true
 
-events {
-    worker_connections 8192;
-}
+[Install]
+WantedBy=multi-user.target
+EOF
 
+# Reload systemd
+sudo systemctl daemon-reload
+
+# Start and enable the Nginx service
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+# add user nginx
+adduser --system --no-create-home --disabled-login --disabled-password --group nginx --home /var/www/html
+
+# Define the file to be modified
+nginx_conf_file="/usr/local/nginx/conf/nginx.conf"
+
+# Comment out the HTTP block
+sed -i '/http {/,/}/ s/^/#/' "$nginx_conf_file"
+
+# Define the configuration line to be added
+config_line="include /usr/local/nginx/stream.conf;"
+
+# Check if the line already exists in the nginx.conf file
+if ! grep -qF "$config_line" "$nginx_conf_file"; then
+    # Add the line to the nginx.conf file at the beginning
+    sed -i '11s|^|'"$config_line"'\n|' "$nginx_conf_file"
+    echo "Added the streamconfig to nginx.conf."
+else
+    echo "streamconfig already exists in nginx.conf. Skipped."
+fi
+
+worker_processes_value="4"
+# Check if the worker_processes directive exists and modify it if necessary
+if grep -q '^ *worker_processes *' "$nginx_conf_file"; then
+    # Worker processes directive exists, replace its value
+    sudo sed -i 's/^\( *worker_processes\) .*/\1 '"$worker_processes_value"';/' "$nginx_conf_file"
+    echo "Replaced worker_processes directive in nginx.conf."
+else
+    # Worker processes directive doesn't exist, add it
+    sudo sed -i '/http {/a worker_processes '"$worker_processes_value"';' "$nginx_conf_file"
+    echo "Added worker_processes directive to nginx.conf."
+fi
+
+# Define the configuration line to be added
+config_line="include /usr/share/nginx/modules/*.conf;"
+
+# Check if the line already exists in the nginx.conf file
+if ! grep -qF "$config_line" "$nginx_conf_file"; then
+    # Add the line to the nginx.conf file at the beginning
+    sed -i '1s|^|'"$config_line"'\n|' "$nginx_conf_file"
+    echo "Added the load_module directive to nginx.conf."
+else
+    echo "Directive already exists in nginx.conf. Skipped."
+fi
+
+# Define the configuration line to be added
+config_line="user nginx;"
+# Check if the line already exists in the nginx.conf file
+if ! grep -qF "$config_line" "$nginx_conf_file"; then
+    # Add the line to the nginx.conf file at the beginning
+    sed -i '1s/^/'"$config_line"'\n/' "$nginx_conf_file"
+    echo "Added the user directive to nginx.conf."
+else
+    echo "Directive already exists in nginx.conf. Skipped."
+fi
+
+mkdir -p /usr/local/nginx/conf.d/
+# Define the configuration line to be added
+config_line="include /usr/local/nginx/conf.d/*.conf;"
+
+# Check if the line already exists in the nginx.conf file
+if ! grep -qF "$config_line" "$nginx_conf_file"; then
+    # Add the line to the nginx.conf file in the appropriate section (e.g., http block)
+    sed -i '/http {/a '"$config_line"'' "$nginx_conf_file"
+    echo "Added the include directive to nginx.conf."
+else
+    echo "Directive already exists in nginx.conf. Skipped."
+fi
+
+cat << 'EOF' > /usr/local/nginx/stream.conf
+load_module /usr/lib/nginx/modules/ngx_stream_module.so;
 stream {
     upstream backend {
         least_conn;
