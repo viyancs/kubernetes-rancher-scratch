@@ -105,7 +105,7 @@ else
 fi
 
 cat << 'EOF' > /usr/local/nginx/stream.conf
-load_module /usr/lib/nginx/modules/ngx_stream_module.so;
+
 stream {
     upstream backend {
         least_conn;

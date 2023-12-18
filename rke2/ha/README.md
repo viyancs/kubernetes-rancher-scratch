@@ -19,14 +19,38 @@ cd kubernetes-rancher-scratch/rke2/ha
 - Create 3 vm Ubuntu 22.04.2  with rsa key access 
 - Create unique hostname in each server node , put 1 node for fixed-server
 - SSH into fixed-server 
-- Config Hostname ```chmod +x config-hostname.sh && ./config-hostname.sh```
+- Config Hostname on each server ```chmod +x config-hostname.sh && ./config-hostname.sh```
 - Config Hostname code part ```/usr/local/nginx/conf.d/stream.conf```, Run script for config load balancer ``` chmod +x load-balancer.sh && ./load-balancer.sh ```
 - Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
 - quit from ssh fixed server
+- ssh into each server for the first server create this config file 
+```
+# Define the file path
+# create file on this location /etc/rancher/rke2/config.yaml
+
+# Content for the RKE2 config file
+ tls-san:
+   - fxd.vyn.com
+   - 10.130.0.2
+
+```
+- for the second and the other server
+```
+# Define the file path
+# create file on this location /etc/rancher/rke2/config.yaml
+
+# Content for the RKE2 config file
+ server: https://fxd.vyn.com:9345
+ token: token from first server
+
+ tls-san:
+   - fxd.vyn.com
+   - 10.130.0.2
+
+```
+- Config Hostname on each server ```chmod +x config-hostname.sh && ./config-hostname.sh```
 - Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
 - Run this script on each server ``` chmod +x server.sh && ./server.sh ``` 
-- SSH into each server 
-- Config Host, Config server url rke2 config file, Replace my-shared-secret with token from ```cat /var/lib/rancher/rke2/server/node-token``` on ```add-server-node.sh``` and then run ``` chmod +x add-server-node.sh && ./add-server-node.sh ```
 - restart rke2 service each server 
 ```
 systemctl stop rke2-server
