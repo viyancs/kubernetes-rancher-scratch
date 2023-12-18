@@ -70,5 +70,5 @@ kubectl get nodes
 
 # install rancher
 - ssh into server 1
-- config hostname on ``` install-ranher.sh ```
+- config hostname & password on ``` install-ranher.sh ```
 - run installer ``` chmod +x install-rancher.sh && install-rancher.sh```
