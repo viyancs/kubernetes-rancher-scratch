@@ -61,4 +61,9 @@ systemctl start rke2-server
 kubectl get nodes 
 ```
 
+# add node agent
+- ssh into node agent 
+- Config Hostname on each server ```chmod +x config-hostname.sh && ./config-hostname.sh```
+- Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
+- Run this script on each server ``` chmod +x worker.sh && ./worker.sh ``` 
 
