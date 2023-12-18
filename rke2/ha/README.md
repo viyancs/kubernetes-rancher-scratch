@@ -56,7 +56,7 @@ cd kubernetes-rancher-scratch/rke2/ha
 systemctl stop rke2-server
 systemctl start rke2-server
 ```
-- ensure each server kube cluster for the cluster by running this
+- ensure each server kube cluster for the cluster by running this && the result should show 3 nodes
 ```
 kubectl get nodes 
 ```

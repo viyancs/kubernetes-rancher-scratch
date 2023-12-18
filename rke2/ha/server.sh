@@ -29,15 +29,15 @@ fi
 # EOF
 # )
 
-# Create the config directory if it doesn't exist
-sudo mkdir -p "$(dirname "$RKE2_CONFIG_FILE")"
+# # Create the config directory if it doesn't exist
+# sudo mkdir -p "$(dirname "$RKE2_CONFIG_FILE")"
 
-# Write the configuration content to the file
-echo "$CONFIG_CONTENT" | sudo tee "$RKE2_CONFIG_FILE" > /dev/null
+# # Write the configuration content to the file
+# echo "$CONFIG_CONTENT" | sudo tee "$RKE2_CONFIG_FILE" > /dev/null
 
-# Verify the content has been written
-echo "RKE2 Config File created at $RKE2_CONFIG_FILE with the following content:"
-sudo cat "$RKE2_CONFIG_FILE"
+# # Verify the content has been written
+# echo "RKE2 Config File created at $RKE2_CONFIG_FILE with the following content:"
+# sudo cat "$RKE2_CONFIG_FILE"
 
 apt install ufw -y
 
