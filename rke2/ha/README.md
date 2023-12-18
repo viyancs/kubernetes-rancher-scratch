@@ -67,3 +67,8 @@ kubectl get nodes
 - Run firewall script on each server ``` chmod +x firewall.sh && ./firewall.sh```
 - Run this script on each server ``` chmod +x worker.sh && ./worker.sh ``` 
 
+
+# install rancher
+- ssh into server 1
+- config hostname on ``` install-ranher.sh ```
+- run installer ``` chmod +x install-rancher.sh && install-rancher.sh```
