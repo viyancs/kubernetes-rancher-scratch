@@ -8,7 +8,8 @@ spec:
   pipelineRef:
     name: 04-build-and-deploy-pipeline
   status: ''
-  serviceAccountName: pipeline-account
+  taskRunTemplate:
+    serviceAccountName: pipeline-account
   params:
     - name: gitUrl
       value: https://github.com/viyancs/pipelines-vote-ui.git
