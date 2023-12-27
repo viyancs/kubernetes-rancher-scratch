@@ -63,3 +63,6 @@ subjects:
 - kind: ServiceAccount
   name: pipeline-account
   namespace: tekton-pipelines
+- kind: ServiceAccount
+  name: default
+  namespace: default
