@@ -21,6 +21,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: git-clone
+  namespace: tekton-pipelines
 spec:
   workspaces:
   - name: output
@@ -105,6 +106,7 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: kaniko
+  namespace: tekton-pipelines
   labels:
     app.kubernetes.io/version: "0.6"
   annotations:
@@ -173,6 +175,7 @@ apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: "demo.pipeline"
+  namespace: tekton-pipelines
 spec:
   params:
   - name: image-registry
@@ -210,6 +213,7 @@ apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
   name: demo-pipeline-run-1
+  namespace: tekton-pipelines
 spec:
   pipelineRef:
     name: "demo.pipeline"
