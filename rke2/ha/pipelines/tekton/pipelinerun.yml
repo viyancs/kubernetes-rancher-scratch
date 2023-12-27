@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: example-app-vote-ui
+  namespace: tekton-pipelines
+  labels: {}
+spec:
+  pipelineRef:
+    name: 04-build-and-deploy-pipeline
+  status: ''
+  params:
+    - name: gitUrl
+      value: https://github.com/viyancs/pipelines-vote-ui.git
+    - name: gitRevision
+      value: master
+    - name: pathToYamlFile
+      value: pipelines-vote-ui/k8s/deployment.yml
+    - name: imageUrl
+      value: ghcr.io/viyancs/pipelines-vote-ui
+    - name: imageTag
+      value: latest
+    - name: gitTargetDir
+      value: pipelines-vote-ui
+    - name: dockerFile
+      value: pipelines-vote-ui/Dockerfile
+    - name: context
+      value: pipelines-vote-ui
+  serviceAccountName: pipeline-account
+  workspaces:
+    - name: git-source
+      persistentVolumeClaim:
+        claimName: pipeline-pv-claim
