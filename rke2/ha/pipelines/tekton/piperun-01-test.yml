@@ -1,18 +1,18 @@
-# This demo modifies the cluster (deploys to it) you must use a service
-# account with permission to admin the cluster (or make your default user an admin
-# of the `default` namespace with default-cluster-admin.
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  generateName: default-cluster-admin-
-subjects:
-  - kind: ServiceAccount
-    name: default
-    namespace: default
-roleRef:
-  kind: ClusterRole
-  name: cluster-admin
-  apiGroup: rbac.authorization.k8s.io
+# # This demo modifies the cluster (deploys to it) you must use a service
+# # account with permission to admin the cluster (or make your default user an admin
+# # of the `default` namespace with default-cluster-admin.
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   generateName: default-cluster-admin-
+# subjects:
+#   - kind: ServiceAccount
+#     name: default
+#     namespace: default
+# roleRef:
+#   kind: ClusterRole
+#   name: cluster-admin
+#   apiGroup: rbac.authorization.k8s.io
 ---
 # Copied from https://github.com/tektoncd/catalog/blob/v1/git/git-clone.yaml
 # With a few fixes being ported over in https://github.com/tektoncd/catalog/pull/290
@@ -176,7 +176,7 @@ metadata:
 spec:
   params:
   - name: image-registry
-    default: gcr.io/christiewilson-catfactory
+    default: ghcr.io/viyancs/pipelines-vote-ui
   workspaces:
   - name: git-source
   tasks:
@@ -185,7 +185,7 @@ spec:
       name: git-clone
     params:
     - name: url
-      value: https://github.com/GoogleContainerTools/skaffold
+      value: https://github.com/viyancs/pipelines-vote-ui.git
     - name: revision
       value: main
     workspaces:
@@ -197,11 +197,11 @@ spec:
       name: kaniko
     params:
     - name: IMAGE
-      value: $(params.image-registry)/getting-started
+      value: $(params.image-registry)/pipelines-vote-ui
     - name: CONTEXT
-      value: examples/getting-started
+      value: .
     - name: DOCKERFILE
-      value: $(workspaces.source.path)/examples/getting-started/Dockerfile
+      value: $(workspaces.source.path)/Dockerfile
     workspaces:
     - name: source
       workspace: git-source
@@ -214,7 +214,7 @@ spec:
   pipelineRef:
     name: "demo.pipeline"
   taskRunTemplate:
-    serviceAccountName: 'default'
+    serviceAccountName: 'pipeline-account'
   workspaces:
   - name: git-source
     volumeClaimTemplate:
