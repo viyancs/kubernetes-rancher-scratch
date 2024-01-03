@@ -289,7 +289,7 @@ spec:
       - name: imageDigest
         value: $(tasks.build-image.results.IMAGE-DIGEST)
       - name: deploymentName
-        value: $(params.context)-deployment
+        value: default-deployment
 
 ---
 apiVersion: tekton.dev/v1
