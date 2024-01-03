@@ -28,11 +28,10 @@ config-tekton
 ============
  ```
     kubectl apply -f tekton-git-ssh-key.yaml
-    kubectl apply -f 01-git-clone.yaml
-    kubectl apply -f 02-build-and-push-image.yaml
-    kubectl apply -f 03-deploy-using-kubectl.yaml
-    kubectl apply -f 04-build-and-deploy-pipeline.yaml
     kubectl apply -f 05-pipeline-account.yaml
-    kubectl apply -f pipeline-account.yaml
+    # before execute below change config.json auth value with out put from
+    echo -n USER:ACCESS_TOKEN(github access token) | base64
+    kubectl create secret generic kaniko-secret --from-file=config.json -n tekton-pipelines
+    kubectl apply -f piperun-01-test.yaml
     kubectl apply -f pipeline-account.yaml
 ```
