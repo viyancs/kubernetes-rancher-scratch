@@ -266,7 +266,7 @@ spec:
     #     operator: in
     #     values: [ "deploy" ]
     taskRef:
-      name: 03-deploy-using-kubectl
+      name: deploy-using-kubectl
     workspaces:
       - name: git-source
         workspace: git-source
@@ -291,6 +291,15 @@ metadata:
 spec:
   pipelineRef:
     name: "demo.pipeline"
+  params:
+    - name: pathToYamlFile
+      value: "k8s/deployment.yaml"
+    - name: imageUrl
+      value: "ghcr.io/nbizzle/pipelines-vote-ui"
+    - name: imageTag
+      value: "latest"
+    - name: deploymentName
+      value: pipeline-vote-ui-deployment
   taskRunTemplate:
     serviceAccountName: 'pipeline-account'
   workspaces:
