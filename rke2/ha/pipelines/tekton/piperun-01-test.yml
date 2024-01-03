@@ -229,6 +229,15 @@ spec:
   params:
   - name: image-registry
     default: ghcr.io/nbizzle
+  - name: pathToYamlFile
+    description: The path to the yaml file to deploy within the git source
+  - name: imageUrl
+    description: Image name including repository
+  - name: imageTag
+    description: Image tag
+    default: "latest"
+  - name: deploymentName
+    description: deployment name
   workspaces:
   - name: git-source
   - name: dockerconfig # registry credentials
