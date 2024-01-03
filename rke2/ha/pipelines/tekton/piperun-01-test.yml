@@ -278,7 +278,7 @@ spec:
       - name: imageTag
         value: $(params.imageTag)
       - name: imageDigest
-        value: $(tasks.source-to-image.results.IMAGE-DIGEST)
+        value: $(tasks.build-image.results.IMAGE-DIGEST)
       - name: deploymentName
         value: $(params.context)-deployment
 
