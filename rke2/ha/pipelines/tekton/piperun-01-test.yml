@@ -169,6 +169,55 @@ spec:
         image="$(params.IMAGE)"
         echo -n "${image}" | tee "$(results.IMAGE_URL.path)"
 ---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: deploy-using-kubectl
+  namespace: tekton-pipelines
+spec:
+  workspaces:
+    - name: git-source
+      description: The git repo
+  params:
+    - name: pathToYamlFile
+      description: The path to the yaml file to deploy within the git source
+    - name: imageUrl
+      description: Image name including repository
+    - name: imageTag
+      description: Image tag
+      default: "latest"
+    - name: imageDigest
+      description: Digest of the image to be used.
+    - name: deploymentName
+      description: deployment name for trigering rollback kubernetes pods because cant automate when any change on demand in image 
+  steps:
+    - name: update-yaml
+      image: alpine
+      command: ["sed"]
+      args:
+        - "-i"
+        - "-e"
+        - "s;__IMAGE__;$(params.imageUrl):$(params.imageTag);g"
+        - "-e"
+        - "s;__DIGEST__;$(params.imageDigest);g"
+        - "$(workspaces.git-source.path)/$(params.pathToYamlFile)"
+    - name: run-kubectl
+      image: lachlanevenson/k8s-kubectl
+      command: ["kubectl"]
+      args:
+        - "apply"
+        - "-f"
+        - "$(workspaces.git-source.path)/$(params.pathToYamlFile)"
+    - name: rollback-kubectl
+      image: lachlanevenson/k8s-kubectl
+      command: ["kubectl"]
+      args:
+        - "rollout"
+        - "restart"
+        - "deployment/$(params.deploymentName)"
+        - "--namespace=tekton-pipelines"
+
+---
 # This Pipeline Builds a container image (https://github.com/GoogleContainerTools/skaffold/tree/master/examples/getting-started)
 # and pushes it to a registry.
 apiVersion: tekton.dev/v1
@@ -179,18 +228,19 @@ metadata:
 spec:
   params:
   - name: image-registry
-    default: ghcr.io/viyancs/pipelines-vote-ui
+    default: ghcr.io/nbizzle
   workspaces:
   - name: git-source
+  - name: dockerconfig # registry credentials
   tasks:
   - name: fetch-from-git
     taskRef:
       name: git-clone
     params:
     - name: url
-      value: https://github.com/viyancs/pipelines-vote-ui.git
+      value: https://github.com/nbizzle/pipelines-vote-ui.git
     - name: revision
-      value: main
+      value: master
     workspaces:
     - name: output
       workspace: git-source
@@ -200,7 +250,7 @@ spec:
       name: kaniko
     params:
     - name: IMAGE
-      value: $(params.image-registry)/pipelines-vote-ui
+      value: $(params.image-registry)/pipelines-vote-ui:latest
     - name: CONTEXT
       value: .
     - name: DOCKERFILE
@@ -208,11 +258,35 @@ spec:
     workspaces:
     - name: source
       workspace: git-source
+    - name: dockerconfig # registry credentials to push
+      workspace: dockerconfig
+  - name: deploy-to-cluster
+    # when:
+    #   - input: "$(params.gitRevision)"
+    #     operator: in
+    #     values: [ "deploy" ]
+    taskRef:
+      name: 03-deploy-using-kubectl
+    workspaces:
+      - name: git-source
+        workspace: git-source
+    params:
+      - name: pathToYamlFile
+        value: $(params.pathToYamlFile)
+      - name: imageUrl
+        value: $(params.imageUrl)
+      - name: imageTag
+        value: $(params.imageTag)
+      - name: imageDigest
+        value: $(tasks.source-to-image.results.IMAGE-DIGEST)
+      - name: deploymentName
+        value: $(params.context)-deployment
+
 ---
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
-  name: demo-pipeline-run-1
+  name: demo-pipeline-run-latest-image
   namespace: tekton-pipelines
 spec:
   pipelineRef:
@@ -220,6 +294,9 @@ spec:
   taskRunTemplate:
     serviceAccountName: 'pipeline-account'
   workspaces:
+  - name: dockerconfig
+    secret:
+      secretName: kaniko-secret # refer to the secret
   - name: git-source
     volumeClaimTemplate:
       spec:
